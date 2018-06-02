@@ -1,21 +1,6 @@
 let restaurant;
 var map;
 
-const IMG_SIZES = [
-  {
-    name: "small",
-    width: 400, 
-  },
-  {
-    name: "medium",
-    width: 700,
-  },
-  {
-    name: "large",
-    width: -1,
-  }
-];
-
 /**
  * Initialize Google map, called from HTML.
  */
