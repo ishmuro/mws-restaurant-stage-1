@@ -5,8 +5,8 @@
 
 :root {
   --header-size: 80px;
-  --footer-size-mod: 25px;
-  --page-margin: 40px;
+  --footer-padding: 25px;
+  --page-padding: 40px;
 }
 
 body,td,th,p{
@@ -56,7 +56,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   color: #aaa;
   font-size: 8pt;
   letter-spacing: 1px;
-  padding: 25px 0 25px 0;
+  padding: var(--footer-padding) 0 var(--footer-padding) 0;
   text-align: center;
   text-transform: uppercase;
 }
@@ -65,7 +65,7 @@ nav {
   display: flex;
   flex: 0 1 column;
   width: 100%;
-  height: 80px;
+  height: var(--header-size);
   background-color: #252831;
   text-align:center;
 }
@@ -74,13 +74,13 @@ nav h1 {
 }
 nav h1 a {
   color: #fff;
-  font-size: 14pt;
+  font-size: 1.8rem;
   font-weight: 200;
   letter-spacing: 10px;
   text-transform: uppercase;
 }
 #breadcrumbs {
-    padding: 10px var(--page-margin);
+    padding: 10px var(--page-padding);
     list-style: none;
     background-color: #eee;
     font-size: 1.2rem;
@@ -140,7 +140,7 @@ nav h1 a {
   background-color: white;
   border: 1px solid #fff;
   font-family: Arial,sans-serif;
-  font-size: 11pt;
+  font-size: 1.46rem;
   height: 35px;
   letter-spacing: 0;
   margin: 10px;
@@ -185,7 +185,7 @@ nav h1 a {
 #restaurants-list li h1 {
   color: #f18200;
   font-family: Arial,sans-serif;
-  font-size: 14pt;
+  font-size: 1.86rem;
   font-weight: 200;
   letter-spacing: 0;
   line-height: 1.3;
@@ -201,7 +201,7 @@ nav h1 a {
   border-bottom: 3px solid #eee;
   color: #fff;
   display: inline-block;
-  font-size: 10pt;
+  font-size: 1.33rem;
   margin: 15px 0 0;
   padding: 8px 30px 10px;
   text-align: center;
@@ -253,7 +253,7 @@ nav h1 a {
 #restaurant-name {
   color: #f18200;
   font-family: Arial,sans-serif;
-  font-size: 20pt;
+  font-size: 2.66rem;
   font-weight: 200;
   letter-spacing: 0;
   margin: 15px 0 30px;
@@ -285,7 +285,7 @@ nav h1 a {
   border-bottom: 1px solid #d9d9d9;
 }
 #restaurant-container {
-  padding: 0 var(--page-margin) calc(50px + 1rem) var(--page-margin);
+  padding: 0 var(--page-padding) calc(50px + 1rem) var(--page-padding);
   width: calc(50% - 80px);
 }
 #reviews-container {
@@ -295,7 +295,7 @@ nav h1 a {
 }
 #reviews-container h2 {
   color: #f58500;
-  font-size: 24pt;
+  font-size: 3.2rem;
   font-weight: 300;
   letter-spacing: -1px;
   padding-bottom: 1pt;
@@ -303,7 +303,7 @@ nav h1 a {
 #reviews-list {
   margin: 0;
   padding: 0;
-  padding-right: var(--page-margin);
+  padding-right: var(--page-padding);
 }
 #reviews-list li {
   background-color: #fff;
