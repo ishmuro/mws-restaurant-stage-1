@@ -13,6 +13,15 @@ document.addEventListener('DOMContentLoaded', (event) => {
 });
 
 /**
+ * Register a service worker for offline capabilities.
+ */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/service_worker.js', {scope: '/'})
+  .then((reg) => {console.log(`Service worker OK. Scope is ${reg.scope}`)})
+  .catch((error) => {console.log(`Service worker registration failed: ${error}`)});
+}
+
+/**
  * Fetch all neighborhoods and set their HTML.
  */
 fetchNeighborhoods = () => {
