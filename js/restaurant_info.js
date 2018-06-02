@@ -1,6 +1,21 @@
 let restaurant;
 var map;
 
+const IMG_SIZES = [
+  {
+    name: "small",
+    width: 400, 
+  },
+  {
+    name: "medium",
+    width: 700,
+  },
+  {
+    name: "large",
+    width: -1,
+  }
+];
+
 /**
  * Initialize Google map, called from HTML.
  */
@@ -56,8 +71,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const image = document.getElementById('restaurant-img');
-  image.className = 'restaurant-img'
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
+  image.className = 'restaurant-img';
+  image.setAttribute('sizes', '(min-width: 66rem) calc(50vw - 80px), 100wv');
+  const getImg = (size) => DBHelper.imageUrlForRestaurant(restaurant, size);
+  image.setAttribute('srcset', `${getImg('small')} 320w, ${getImg('medium')} 640w, ${getImg('large')} 800w`);
+  image.src = getImg();
 
   const cuisine = document.getElementById('restaurant-cuisine');
   cuisine.innerHTML = restaurant.cuisine_type;
