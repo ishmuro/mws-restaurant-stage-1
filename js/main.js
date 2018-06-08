@@ -15,10 +15,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
 /**
  * Register a service worker for offline capabilities.
  */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/service_worker.js', {scope: '/'})
-  .then((reg) => {console.log(`Service worker OK. Scope is ${reg.scope}`)})
-  .catch((error) => {console.log(`Service worker registration failed: ${error}`)});
+const registerServiceWorker = () => {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service_worker.js', {scope: '/'})
+    .then((reg) => {console.log(`Service worker OK. Scope is ${reg.scope}`)})
+    .catch((error) => {console.log(`Service worker registration failed: ${error}`)});
+  } else {
+    console.warn('No serviceWorker capabilities detected.');
+  }
 }
 
 /**
@@ -44,6 +48,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
     const option = document.createElement('option');
     option.innerHTML = neighborhood;
     option.value = neighborhood;
+    option.setAttribute('role', 'option');
     select.append(option);
   });
 }
@@ -90,6 +95,15 @@ window.initMap = () => {
     scrollwheel: false
   });
   updateRestaurants();
+
+  // We do not need to have Google maps stuff in tabindex
+
+  google.maps.event.addListener(self.map, "tilesloaded", () => {
+    let links = document.querySelectorAll('#map a');
+    for (link of links) {
+      link.setAttribute('tabindex', '-1');
+    }
+  });
 }
 
 /**

@@ -90,6 +90,9 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     row.appendChild(time);
 
     hours.appendChild(row);
+
+    hours.setAttribute('aria-label', `Working hours for ${self.restaurant.name}`);
+    houts.setAttribute('tabindex', '0');
   }
 }
 
@@ -113,6 +116,9 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
+
+  ul.setAttribute('aria-label', `Reviews for ${self.restaurant.anme}`);
+  ul.setAttribute('tabindex', '0');
 }
 
 /**
@@ -147,6 +153,7 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   const li = document.createElement('li');
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
+  li.setAttribute('aria-current', 'page');
 }
 
 /**
