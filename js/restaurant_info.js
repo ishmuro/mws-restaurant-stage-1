@@ -93,7 +93,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     hours.appendChild(row);
 
     hours.setAttribute('aria-label', `Working hours for ${self.restaurant.name}`);
-    houts.setAttribute('tabindex', '0');
+    hours.setAttribute('tabindex', '0');
   }
 }
 
