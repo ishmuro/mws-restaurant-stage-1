@@ -182,7 +182,7 @@ header h1 a {
   min-height: 248px;
   min-width: 100%;
 }
-#restaurants-list li h1 {
+#restaurants-list li h2 {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 1.4rem;
@@ -293,7 +293,7 @@ header h1 a {
   padding-top: 20px;
   border-top: 1px solid #d9d9d9;
 }
-#reviews-container h2 {
+#reviews-container h3 {
   color: #f58500;
   font-size: 3.2rem;
   font-weight: 300;
