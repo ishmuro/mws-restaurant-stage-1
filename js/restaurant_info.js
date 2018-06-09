@@ -118,7 +118,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   });
   container.appendChild(ul);
 
-  ul.setAttribute('aria-label', `Reviews for ${self.restaurant.anme}`);
+  ul.setAttribute('aria-label', `Reviews for ${self.restaurant.name}`);
   ul.setAttribute('tabindex', '0');
 }
 
