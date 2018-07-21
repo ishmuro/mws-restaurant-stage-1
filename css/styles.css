@@ -80,6 +80,7 @@ header h1 a {
   text-transform: uppercase;
 }
 #breadcrumbs {
+    display: flex;
     padding: 10px var(--page-padding);
     list-style: none;
     background-color: #eee;
@@ -88,6 +89,8 @@ header h1 a {
     width: calc(50% - 80px);
     box-shadow: 0 5px 5px rgba(0, 0, 0, 0.2);
     z-index: 1;
+    justify-content: center;
+    align-items: center;
 }
 
 /* Display list items side by side */
