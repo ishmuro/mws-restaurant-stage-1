@@ -20,7 +20,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_VER)
         .then(cache => {
-            let resources = CACHED_RESOURCES.cache_first.concat(CACHED_RESOURCES.net_first);
+            let resources = CACHED_RESOURCES.concat(CACHED_RESOURCES.net_first);
             return cache.addAll(resources);
         })
         .catch(error => {
