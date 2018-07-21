@@ -5,7 +5,7 @@ class DBHelper {
 
   static get DATABASE_URL() {
     const port = 1337;
-    return `http://${document.location.hostname}:${port}/restaurants`;
+    return `${document.location.protocol}//${document.location.hostname}:${port}/restaurants`;
   }
 
   /**
@@ -29,7 +29,7 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id) {
-    return fetch(`${DBHelper.DATABASE_URL}/{${id}}`)
+    return fetch(`${DBHelper.DATABASE_URL}/${id}`)
       .then(resp => {
         if (!resp) {
           throw `No response: ${resp.status} ${resp.statusText}`;
