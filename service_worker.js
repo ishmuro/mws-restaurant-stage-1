@@ -4,13 +4,14 @@ const CACHE_WHITELIST = ['v1'];
 const CACHED_RESOURCES = [
     '/data/restaurants.json',
     '/js/dbhelper.js',
+    '/js/idb.js',
     '/js/restaurant_info.js',
     '/js/main.js',
     '/css/styles.css',
     '/css/responsive.css',
     '/restaurant.html',
     '/'
-]
+];
 
 
 /**
@@ -20,8 +21,7 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(CACHE_VER)
         .then(cache => {
-            let resources = CACHED_RESOURCES.concat(CACHED_RESOURCES.net_first);
-            return cache.addAll(resources);
+            return cache.addAll(CACHED_RESOURCES);
         })
         .catch(error => {
             console.error(`Could not open cache ${CACHE_VER}: ${error}`);
@@ -60,7 +60,7 @@ self.addEventListener('fetch', event => {
                         return fetched_response;
                     })
                     .catch(error => {
-                        console.warn(`Could not fetch ${event.request.uri}. Internet much?`);
+                        console.warn(`Could not fetch ${event.request.uri} (${error}). Internet much?`);
                     });
                 })
             })

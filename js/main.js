@@ -1,15 +1,22 @@
 let restaurants,
   neighborhoods,
-  cuisines
-var map
-var markers = []
+  cuisines;
+var map;
+var markers = [];
+
+var db;
+
+const IDB_VER = 1;
+const IDB_NAME = 'restaurant-review';
+const IDB_STORE = 'restaurants';
 
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   fetchNeighborhoods();
+  registerIDB();
   fetchCuisines();
 });
 
@@ -24,7 +31,20 @@ const registerServiceWorker = () => {
   } else {
     console.warn('No serviceWorker capabilities detected.');
   }
-}
+};
+
+const registerIDB = async () => {
+  if (!('indexedDB' in window)) {
+    console.warn('No indexedDB capabilities detected.');
+    return;
+  }
+
+  self.db = await idb.open(IDB_NAME, IDB_VER, upgradeDB => {
+    if (!upgradeDB.objectStoreNames.contains(IDB_STORE)) {
+      upgradeDB.createObjectStore(IDB_STORE, {keyPath: 'id'});
+    }
+  });
+};
 
 /**
  * Fetch all neighborhoods and set their HTML.
@@ -32,7 +52,7 @@ const registerServiceWorker = () => {
 fetchNeighborhoods = async () => {
   self.neighborhoods = await DBHelper.fetchNeighborhoods();
   fillNeighborhoodsHTML();
-}
+};
 
 /**
  * Set neighborhoods HTML.
@@ -45,8 +65,8 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
     option.value = neighborhood;
     option.setAttribute('role', 'option');
     select.append(option);
-  };
-}
+  }
+};
 
 /**
  * Fetch all cuisines and set their HTML.
@@ -54,7 +74,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
 fetchCuisines = async () => {
   self.cuisines = await DBHelper.fetchCuisines();
   fillCuisinesHTML();
-}
+};
 
 /**
  * Set cuisines HTML.
@@ -67,8 +87,8 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
     option.innerHTML = cuisine;
     option.value = cuisine;
     select.append(option);
-  };
-}
+  }
+};
 
 /**
  * Initialize Google map, called from HTML.
@@ -93,7 +113,7 @@ window.initMap = () => {
       link.setAttribute('tabindex', '-1');
     }
   });
-}
+};
 
 /**
  * Update page and map for current restaurants.
@@ -111,7 +131,7 @@ updateRestaurants = async () => {
   const restaurants = await DBHelper.fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood);
   resetRestaurants(restaurants);
   fillRestaurantsHTML();
-}
+};
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
@@ -126,7 +146,7 @@ resetRestaurants = (restaurants) => {
   self.markers.forEach(m => m.setMap(null));
   self.markers = [];
   self.restaurants = restaurants;
-}
+};
 
 /**
  * Create all restaurants HTML and add them to the webpage.
@@ -135,9 +155,9 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
   for (const restaurant of restaurants) {
     ul.append(createRestaurantHTML(restaurant));
-  };
+  }
   addMarkersToMap();
-}
+};
 
 /**
  * Create restaurant HTML.
@@ -169,7 +189,7 @@ createRestaurantHTML = (restaurant) => {
   li.append(more);
 
   return li;
-}
+};
 
 /**
  * Add markers for current restaurants to the map.
@@ -182,5 +202,5 @@ addMarkersToMap = (restaurants = self.restaurants) => {
       window.location.href = marker.url
     });
     self.markers.push(marker);
-  };
-}
+  }
+};
