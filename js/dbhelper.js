@@ -8,21 +8,90 @@ class DBHelper {
     return `${document.location.protocol}//${document.location.hostname}:${port}/restaurants`;
   }
 
+  static async enableIDBstore() {
+    if (!('indexedDB' in window)) {
+      console.warn('No indexedDB capabilities detected.');
+      return;
+    }
+
+    if (this.idb_instance) return;
+
+    self.idb_instance = await idb.open(IDB_NAME, IDB_VER, upgradeDB => {
+      if (!upgradeDB.objectStoreNames.contains(IDB_STORE)) {
+        const idb_store = upgradeDB.createObjectStore(IDB_STORE, {keyPath: 'id'});
+        idb_store.createIndex('cuisine', 'cuisine_type');
+        idb_store.createIndex('location', 'neighborhood');
+      }
+    });
+  }
+
+  static async cacheDataInIDB(dataArray) {
+    await this.enableIDBstore();
+    const tx = self.idb_instance.transaction(IDB_STORE, 'readwrite');
+    const store = tx.objectStore(IDB_STORE);
+    for (const item of dataArray) {
+      await store.put(item);
+    }
+
+    await tx.complete;
+  }
+
+  static fetchRestaurantsFromIDB(id=-1) {
+    return this.enableIDBstore()
+    .then(() => {
+      const tx = self.idb_instance.transaction(IDB_STORE, 'read');
+      const store = tx.objectStore(IDB_STORE);
+      if (id !== -1) {
+        return store.get(id);
+      }
+      return store.getAll();
+    })
+  }
+
+  static fetchRestaurantsFromNet(id=-1) {
+    return fetch(id !== -1 ? `${this.DATABASE_URL}/${id}` : this.DATABASE_URL)
+    .then(response => {
+      if (!response.ok) {
+        throw Error(`Request failed: ${response.status} ${response.statusText}`);
+      }
+
+      response.clone().json().then(json_data => {
+        this.cacheDataInIDB(json_data);
+      })
+      return response;
+    }) 
+    .then(response => {
+      return response.json();
+    })
+  }
+
   /**
    * Fetch all restaurants.
    */
   static fetchRestaurants() {
-    return fetch(DBHelper.DATABASE_URL)
-      .then(resp => {
-        if (!resp) {
-          throw `No response: ${resp.status} ${resp.statusText}`;
-        } else {
-          return resp.json();
-        }
-      })
-      .catch(err => {
-        throw `Request failed: ${err}`;
-      });
+    // return fetch(DBHelper.DATABASE_URL)
+    //   .then(resp => {
+    //     resp.clone().json().then(json_data => {
+    //       this.cacheDataInIDB(json_data);
+    //     })
+    //     return resp;
+    //   })
+    //   .then(resp => {
+    //     if (!resp.ok) {
+    //       console.warn(`No response: ${resp.status} ${resp.statusText}`);
+    //     } else {
+    //       return resp.json();
+    //     }
+    //   })
+    //   .catch(err => {
+    //     throw `Request failed: ${err}`;
+    //   });
+
+    return this.fetchRestaurantsFromNet()
+    .catch(err => {
+      console.warn(err);
+      return this.fetchRestaurantsFromIDB();
+    });
   }
 
   /**

@@ -2,7 +2,6 @@ const CACHE_VER = 'v1';
 const CACHE_WHITELIST = ['v1'];
 
 const CACHED_RESOURCES = [
-    '/data/restaurants.json',
     '/js/dbhelper.js',
     '/js/idb.js',
     '/js/restaurant_info.js',
@@ -10,9 +9,13 @@ const CACHED_RESOURCES = [
     '/css/styles.css',
     '/css/responsive.css',
     '/restaurant.html',
-    '/'
+    '/service_worker.js'
 ];
 
+const CACHEABLE_LOCATIONS = [
+    'googleapis.com',
+    'gstatic.com'
+]
 
 /**
  * On worker install we want to have a full app carcass cached
@@ -47,6 +50,19 @@ self.addEventListener('activate', event => {
  */
 self.addEventListener('fetch', event => {
     if (event.request.method === 'GET' && /^https?/i.test(event.request.url)) {
+
+        let canCache = false;
+        for (const pattern of CACHEABLE_LOCATIONS) {
+            if (event.request.url.includes(pattern)) {
+                canCache = true;
+            }
+        }
+
+        if (!canCache) {
+            event.respondWith(fetch(event.request));    // Skip caching
+            return;
+        }
+
         event.respondWith(
             caches.open(CACHE_VER)
             .then(cache => {
