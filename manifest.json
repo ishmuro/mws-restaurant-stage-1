@@ -1,0 +1,21 @@
+{
+  "short_name": "Restaurants",
+  "name": "Restaurant Reviews",
+  "icons": [
+    {
+      "src": "/assets/images/icon-256.png",
+      "type": "image/png",
+      "sizes": "256x256"
+    },
+    {
+      "src": "/assets/images/icons-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#252831",
+  "display": "standalone",
+  "scope": "/maps/",
+  "theme_color": "#252831"
+}
