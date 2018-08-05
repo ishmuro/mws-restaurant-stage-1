@@ -15,7 +15,7 @@ const CACHED_RESOURCES = [
 const CACHEABLE_LOCATIONS = [
     'googleapis.com',
     'gstatic.com'
-]
+];
 
 /**
  * On worker install we want to have a full app carcass cached

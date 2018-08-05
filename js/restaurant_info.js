@@ -20,7 +20,7 @@ window.initMap = async () => {
 /**
  * Get current restaurant from page URL.
  */
-fetchRestaurantFromURL = async () => {
+fetchRestaurantFromURL = () => {
   if (self.restaurant) { // restaurant already fetched!
     return self.restaurant;
   }
@@ -30,18 +30,8 @@ fetchRestaurantFromURL = async () => {
     return;
   }
 
-  return DBHelper.fetchRestaurantById(id);
-  // } else {
-  //    return DBHelper.fetchRestaurantById(id) => {
-  //     self.restaurant = restaurant;
-  //     if (!restaurant) {
-  //       console.error(error);
-  //       return;
-  //     }
-  //     fillRestaurantHTML();
-  //     callback(null, restaurant)
-  //   });
-}
+  return DBHelper.fetchRestaurantById(Number(id));
+};
 
 /**
  * Create restaurant HTML and add it to the webpage
@@ -70,7 +60,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   }
   // fill reviews
   fillReviewsHTML();
-}
+};
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
@@ -93,7 +83,7 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
     hours.setAttribute('aria-label', `Working hours for ${self.restaurant.name}`);
     hours.setAttribute('tabindex', '0');
   }
-}
+};
 
 /**
  * Create all reviews HTML and add them to the webpage.
@@ -118,7 +108,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 
   ul.setAttribute('aria-label', `Reviews for ${self.restaurant.name}`);
   ul.setAttribute('tabindex', '0');
-}
+};
 
 /**
  * Create review HTML and add it to the webpage.
@@ -142,7 +132,7 @@ createReviewHTML = (review) => {
   li.appendChild(comments);
 
   return li;
-}
+};
 
 /**
  * Add restaurant name to the breadcrumb navigation menu
@@ -153,7 +143,7 @@ fillBreadcrumb = (restaurant=self.restaurant) => {
   li.innerHTML = restaurant.name;
   breadcrumb.appendChild(li);
   li.setAttribute('aria-current', 'page');
-}
+};
 
 /**
  * Get a parameter by name from page URL.
@@ -169,4 +159,4 @@ getParameterByName = (name, url) => {
   if (!results[2])
     return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
-}
+};

@@ -6,17 +6,12 @@ var markers = [];
 
 var db;
 
-const IDB_VER = 1;
-const IDB_NAME = 'restaurant-review';
-const IDB_STORE = 'restaurants';
-
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
 document.addEventListener('DOMContentLoaded', () => {
   registerServiceWorker();
   fetchNeighborhoods();
-  registerIDB();
   fetchCuisines();
 });
 
@@ -31,19 +26,6 @@ const registerServiceWorker = () => {
   } else {
     console.warn('No serviceWorker capabilities detected.');
   }
-};
-
-const registerIDB = async () => {
-  if (!('indexedDB' in window)) {
-    console.warn('No indexedDB capabilities detected.');
-    return;
-  }
-
-  self.db = await idb.open(IDB_NAME, IDB_VER, upgradeDB => {
-    if (!upgradeDB.objectStoreNames.contains(IDB_STORE)) {
-      upgradeDB.createObjectStore(IDB_STORE, {keyPath: 'id'});
-    }
-  });
 };
 
 /**
